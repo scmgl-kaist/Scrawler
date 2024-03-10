@@ -148,7 +148,7 @@ if __name__ == "__main__":
     # Tidy up healthy columns
     neat_df.loc[~neat_df['Disease'].isna(), 'Healthy'] = np.nan
     neat_df.loc[~neat_df['Cancer_Type'].isna(), 'Healthy'] = np.nan
-    neat_df = neat_df[['Series', 'Sample Name', 'Organ', 'Healthy', 'Disease', 'Cancer_Tissue', 'Cancer_Type', 'Age', 'Sex']].copy()
+    neat_df = neat_df[['Series', 'Sample Name', 'Organ', 'Healthy', 'Disease', 'Cancer_Type', 'Cancer_Tissue', 'Age', 'Sex']].copy()
 
     # Write final output
     neat_df.to_csv(output_filename, index=False)
