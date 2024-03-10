@@ -154,6 +154,82 @@ def get_pmc_list(pmid_list):
     return pmc_list
 
 
+def get_methods(pmc_list):
+    # Selenium setting
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('window-size=1920x1080')
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument("--single-process")
+
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--disable-setuid-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--no-proxy-server')
+
+    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+
+    chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+    
+    # Get ready
+    driver_path = '/usr/bin/chromedriver'
+    s = Service(driver_path)
+    driver = webdriver.Chrome(service=s, options=chrome_options)
+
+    base_url = "https://www.ncbi.nlm.nih.gov/pmc/articles/{}/"
+    method_text = []
+    pmc_results = {}
+    crawlcount = 0
+    t = 5
+
+    # Scrape Methods for each PMCs
+    for i in tqdm(range(len(pmc_list))):
+        
+        item = pmc_list[i]
+        
+        if item not in pmc_results:
+            
+            div_content = None
+
+            try:
+                url = base_url.format(item)    
+                driver.get(url)
+                time.sleep(t)
+                page_html = driver.page_source
+
+                soup = BeautifulSoup(page_html, 'html.parser')            
+                h2_with_text = soup.find('h2', string=lambda text: text and 'method' in text.lower())
+                
+                if h2_with_text:
+                    parent_div = h2_with_text.find_parent('div')
+                    if parent_div and parent_div.has_attr('id'):
+                        div_content = soup.find('div', {'id': parent_div['id']})
+
+                if div_content:
+                    
+                    for tag in div_content.find_all():
+                        tag.append(" ")
+
+                    extracted_text = ' '.join(div_content.get_text().split())
+                    pmc_results[item] = extracted_text
+                else:
+                    pmc_results[item] = "None"      
+                    
+            except:
+                print(f"An error occurred")
+                pmc_results[item] = "None"  
+            
+        # If it's already scraped
+        method_text.append(pmc_results[item])
+
+    driver.quit()
+
+    return method_text
+
+
 if __name__ == "__main__":
 
     # Read and process input
@@ -163,15 +239,21 @@ if __name__ == "__main__":
     pmid_list = get_pmid_list(series_list)
     processed_pmid_list = [item[0] if len(item) == 1 else item for item in pmid_list]
     pmid_list = processed_pmid_list
-    print(f"{len(pmid_list)} PMIDs scraped. (This number should be the same as your number of samples)")
+    print(f"\n{len(set(pmid_list))} PMIDs scraped.\n")
     df['PMID'] = pmid_list
 
     # Add PMC
     pmc_list = get_pmc_list(pmid_list)
-    print(f"{len(pmid_list)} PMCs scraped. (This number should be the same as your number of samples)")
+    print(f"\n{len(set(pmid_list))} PMCs scraped.\n")
     df['PMC'] = pmc_list
 
-    print(df.head(5))
+    # Add Methods
+    df['Method'] = get_methods(pmc_list)
+    print(f"\nMethods for {len(set(pmc_list))} PMCs scraped.\n")
+
+    # Generate output file
+    df.to_csv(sys.argv[2], index=False)
+    print(f"\nYou can check your result in: {sys.argv[2]}\n")
 
 
 
