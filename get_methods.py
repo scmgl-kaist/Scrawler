@@ -18,6 +18,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
+from selenium.common.exceptions import TimeoutException
 
 def read_input(input_filename):
     # Read input and check format
@@ -52,10 +53,10 @@ def get_pmid_list(series_list):
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('--no-proxy-server')
 
+    # Get ready
     s = Service(driver_path)
     driver = webdriver.Chrome(service=s, options=chrome_options)
 
-    # Get ready
     base_url = "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={}"
     series_results = {}
     pmid_list = []
@@ -87,6 +88,69 @@ def get_pmid_list(series_list):
     return pmid_list
 
 
+def get_pmc_list(pmid_list):
+    # Selenium setting
+    driver_path = '/usr/bin/chromedriver'
+
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('window-size=1920x1080')
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument("--single-process")
+
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--disable-setuid-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--no-proxy-server')
+
+    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+
+    chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+
+    # Get ready
+    driver = webdriver.Chrome(service=s, options=chrome_options)
+
+    base_url = "https://pubmed.ncbi.nlm.nih.gov/{}"
+    xpath = '//*[@id="full-view-identifiers"]/li[2]/span/a'
+
+    pmid_results = {}
+    pmc_list = []
+    t = 5
+
+    # Scrape PMC for each PMID
+    for i in tqdm(range(len(pmid_list))):
+            
+        item = pmid_list[i]
+        
+        try:
+            # If multiple PMIDs
+            item_key = str(item) if isinstance(item, list) else item
+
+            if item_key not in pmid_results:
+                url = base_url.format(item_key)
+                driver.get(url)
+                time.sleep(t)
+                element = driver.find_element(By.XPATH, xpath)
+                            
+                if element:
+                    pmid_results[item_key] = element.text
+                else:
+                    pmid_results[item_key] = "None"
+        
+        except:
+            print('exception for', item)
+            pmid_results[str(item)] = "None"  # List type of item
+
+        pmc_list.append(pmid_results[str(item)])
+
+    driver.quit()
+
+    return pmc_list
+
+
 if __name__ == "__main__":
 
     # Read and process input
@@ -94,7 +158,17 @@ if __name__ == "__main__":
 
     # Add PMID
     pmid_list = get_pmid_list(series_list)
+    processed_pmid_list = [item[0] if len(item) == 1 else item for item in pmid_list]
+    pmid_list = processed_pmid_list
+    print(f"{len(pmid_list)} PMIDs scraped. (This number should be the same as your number of samples)")
+    df['PMID'] = pmid_list
 
+    # Add PMC
+    pmc_list = get_pmc_list(pmid_list)
+    print(f"{len(pmid_list)} PMCs scraped. (This number should be the same as your number of samples)")
+    df['PMC'] = pmc_list
+
+    print(df.head(5))
 
 
 
