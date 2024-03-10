@@ -75,7 +75,7 @@ def annotate(api_key, df, output_filename):
         writer.writerow(['Series', 'Sample Name', 'Organ', 'Healthy', 'Disease', 'Cancer_Tissue', 'Age', 'Sex'])
 
     # Create method data for each GSE as a dictionary
-    gse_method_dict = methods_df.groupby('Series')['method'].first().to_dict()
+    gse_method_dict = methods_df.groupby('Series')['Method'].first().to_dict()
 
     # subset GSE
     number_of_GSE = len(set(methods_df['Series']))
