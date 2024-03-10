@@ -3,6 +3,7 @@ import numpy as np
 import csv
 import time
 import random
+import sys
 
 from tqdm import tqdm
 import GEOparse
