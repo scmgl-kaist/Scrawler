@@ -70,6 +70,10 @@ def annotate(api_key, df, output_filename):
     assert disease_list
     assert cancer_tissue_list
 
+    client = OpenAI(
+        api_key=api_key,
+    )
+
     gpt_model = 'gpt-3.5-turbo'
     # gpt_model = 'gpt-4-0125-preview'
 
