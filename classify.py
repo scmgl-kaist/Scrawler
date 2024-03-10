@@ -103,7 +103,7 @@ def classify_category(api_key, gpt_model, df, output_filename):
 
 if __name__ == "__main__":
 
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print("Usage: python classify.py [input_file] [output_file] [API key]")
         exit()
     
