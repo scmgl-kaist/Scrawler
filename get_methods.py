@@ -20,6 +20,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import TimeoutException
 
+
 def read_input(input_filename):
     # Read input and check format
     df = pd.read_csv(input_filename)
@@ -31,6 +32,9 @@ def read_input(input_filename):
     series_list = df["Series"].to_list()
     print(f"Found {len(series_list)} samples in your file.")
 
+    # Sorting
+    df = df.sort_values(["Series", 'Sample Name'])
+
     # Adding columns for later use
     df["PMID"] = None
     df["PMC"] = None
@@ -40,8 +44,6 @@ def read_input(input_filename):
 
 def get_pmid_list(series_list):
     # Selenium setting
-    driver_path = '/usr/bin/chromedriver'
-
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('window-size=1920x1080')
     chrome_options.add_argument('--headless')
@@ -54,6 +56,7 @@ def get_pmid_list(series_list):
     chrome_options.add_argument('--no-proxy-server')
 
     # Get ready
+    driver_path = '/usr/bin/chromedriver'
     s = Service(driver_path)
     driver = webdriver.Chrome(service=s, options=chrome_options)
 
@@ -90,8 +93,6 @@ def get_pmid_list(series_list):
 
 def get_pmc_list(pmid_list):
     # Selenium setting
-    driver_path = '/usr/bin/chromedriver'
-
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('window-size=1920x1080')
     chrome_options.add_argument('--headless')
@@ -111,6 +112,8 @@ def get_pmc_list(pmid_list):
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
 
     # Get ready
+    driver_path = '/usr/bin/chromedriver'
+    s = Service(driver_path)
     driver = webdriver.Chrome(service=s, options=chrome_options)
 
     base_url = "https://pubmed.ncbi.nlm.nih.gov/{}"
