@@ -30,7 +30,7 @@ def read_input(input_filename):
         print("Error! 'Series', 'Sample Name' columns should be in your dataframe")
         exit()
     series_list = df["Series"].to_list()
-    print(f"Found {len(series_list)} samples in your file.")
+    print(f"\nFound {len(series_list)} samples in your file.\n")
 
     # Sorting
     df = df.sort_values(["Series", 'Sample Name'])
@@ -241,8 +241,7 @@ if __name__ == "__main__":
 
     # Add PMID
     pmid_list = get_pmid_list(series_list)
-    processed_pmid_list = [item[0] if len(item) == 1 else item for item in pmid_list]
-    pmid_list = processed_pmid_list
+    pmid_list = [item[0] if len(item) == 1 else item for item in pmid_list]
     print(f"\nPMIDs for {len(pmid_list)} samples scraped.\n")
     df['PMID'] = pmid_list
 
