@@ -176,6 +176,10 @@ if __name__ == "__main__":
         print("Usage: python annotate_primary.py [input_file] [output_file] [API key]")
         exit()
     
+    input_filename = sys.argv[1]
+    output_filename = sys.argv[2]
+    api_key = sys.argv[3]
+    
     # Read input and check format
     df = read_input(input_filename)
 
