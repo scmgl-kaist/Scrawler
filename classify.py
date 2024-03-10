@@ -14,7 +14,7 @@ def read_input(input_filename):
     df = pd.read_csv(input_filename)
 
     try:
-        df = df[['Series', 'Sample', 'Sample Name', 'Method']]
+        df = df[['Series', 'Sample Name', 'Method']]
     except:
         print("\nError! You input should have ['Series', 'Sample', 'Sample Name', 'Method'] columns.\n")
         exit()
