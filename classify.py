@@ -4,6 +4,8 @@ import csv
 import time
 import random
 import sys
+import os
+import subprocess
 
 from tqdm import tqdm
 import GEOparse
@@ -109,6 +111,12 @@ def merge_methods(df, output_filename):
     final_df.to_csv(output_filename, index=False)
 
 
+def remove_GEOparse_pybroduct():
+    pwd = os.getcwd()
+    if subprocess.call(f"rm {pwd}/GSE*.gz", shell=True):
+        print("Error occured while removing unnecessary GEOparse byproduct files.")
+
+
 if __name__ == "__main__":
 
     if len(sys.argv) != 4:
@@ -130,4 +138,6 @@ if __name__ == "__main__":
 
     print(f"\nYou can check your result in: {output_filename}\n")
 
+    remove_GEOparse_pybroduct()
 
+    
