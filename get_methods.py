@@ -243,17 +243,17 @@ if __name__ == "__main__":
     pmid_list = get_pmid_list(series_list)
     processed_pmid_list = [item[0] if len(item) == 1 else item for item in pmid_list]
     pmid_list = processed_pmid_list
-    print(f"\n{len(set(pmid_list))} PMIDs scraped.\n")
+    print(f"\nPMIDs for {len(pmid_list)} samples scraped.\n")
     df['PMID'] = pmid_list
 
     # Add PMC
     pmc_list = get_pmc_list(pmid_list)
-    print(f"\n{len(set(pmid_list))} PMCs scraped.\n")
+    print(f"\nPMCs for {len(set(pmc_list))} samples scraped.\n")
     df['PMC'] = pmc_list
 
     # Add Methods
     df['Method'] = get_methods(pmc_list)
-    print(f"\nMethods for {len(set(pmc_list))} PMCs scraped.\n")
+    print(f"\nMethods for {len(set(pmc_list))} samplesscraped.\n")
 
     # Generate output file
     df.to_csv(sys.argv[2], index=False)
