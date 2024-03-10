@@ -252,7 +252,7 @@ if __name__ == "__main__":
 
     # Add Methods
     df['Method'] = get_methods(pmc_list)
-    print(f"\nMethods for {len(set(pmc_list))} samplesscraped.\n")
+    print(f"\nMethods for {len(set(pmc_list))} samples scraped.\n")
 
     # Generate output file
     df.to_csv(sys.argv[2], index=False)
