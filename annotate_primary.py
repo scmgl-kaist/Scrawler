@@ -56,11 +56,11 @@ def answer_to_dict(answer):
 
 def annotate(api_key, df, output_filename):
     # Organ term list
-    org = pd.read_csv("/home/smcheong/scParse/Organ_list.csv")
+    org = pd.read_csv("/home/smcheong/SCraper/Organ_list.csv")
     organ_list = org['Organ'].tolist()
 
     # Disease term list
-    dis = pd.read_csv("/home/smcheong/scParse/Disease_list.csv")
+    dis = pd.read_csv("/home/smcheong/SCraper/Disease_list.csv")
     disease_list = dis['Disease_Cancer'].tolist()
     
     # Cancer_Tissue term list

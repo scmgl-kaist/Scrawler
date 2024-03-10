@@ -1,3 +1,3 @@
-# SCraper
+# scParse
 
 ChatGPT-aided metadata annotation
