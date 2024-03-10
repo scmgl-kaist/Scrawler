@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+import sys
+
+from tqdm import tqdm
 
 from openai import OpenAI
 
