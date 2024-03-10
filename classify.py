@@ -16,13 +16,13 @@ def read_input(input_filename):
     try:
         df = df[['Series', 'Sample Name', 'Method']]
     except:
-        print("\nError! You input should have ['Series', 'Sample', 'Sample Name', 'Method'] columns.\n")
+        print("\nError! You input should have ['Series', 'Sample Name', 'Method'] columns.\n")
         exit()
 
     return df
 
 
-def classify_category(api_key, gpt_model, df, output_filename):
+def classify_category(api_key, df, output_filename):
 
     client = OpenAI(
         api_key=api_key,
