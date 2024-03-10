@@ -101,6 +101,14 @@ def classify_category(api_key, df, output_filename):
             time.sleep(random.uniform(0.5, 1.5))  # Wait like a human
 
 
+def merge_methods(df, output_filename):
+    df1 = df
+    df2 = pd.read_csv(output_filename)
+
+    final_df = pd.merge(df1, df2[['Sample Name', 'Category']], on='Sample Name')
+    final_df.to_csv(output_filename)
+
+
 if __name__ == "__main__":
 
     if len(sys.argv) != 4:
@@ -116,6 +124,10 @@ if __name__ == "__main__":
 
     # Run GPT
     classify_category(api_key, df, output_filename)
+
+    # We need Methods in step 2
+    merge_methods(df, output_filename)
+
     print(f"\nYou can check your result in: {output_filename}\n")
 
 
