@@ -119,7 +119,7 @@ def annotate(api_key, df, output_filename):
             # Main questions
             prompt += f"\n [Organ] What organ is the sample from? Answer with one of the following options: \n {organ_list}"
             prompt += f"\n [Healthy] Is the sample from a healthy individual? Answer with *Yes* or *nan*. The cancer adjacent normal sample should be classified as *nan*. \n"
-            prompt += f"\n [Disease] What type of disease is the sample from? If the sample is from a healthy individual, please answer with nan. Answer with one of the following options: \n {disease_cancer_list}"
+            prompt += f"\n [Disease] What type of disease is the sample from? If the sample is from a healthy individual, please answer with nan. Answer with one of the following options: \n {disease_list}"
             prompt += f"\n [Cancer_Tissue] If it is a cancer sample, which tissue the sample is from? The adjacent normal sample should not be classified as healthy but should be classified as *Adjacent_Normal*. If it is not a cancer sample, please answer with *nan*. Answer with one of the following options: \n {cancer_tissue_list}"
 
             # Age, Sex
