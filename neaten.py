@@ -114,7 +114,7 @@ def neaten_up(api_key, df):
 def split_cancer(swapped_df):
     # Cancer_Type term list
     can = pd.read_csv("/home/smcheong/SCraper/Cancer_list.csv")
-    cancer_list = can['Cancer_type'].tolist()
+    cancer_type_list = can['Cancer_type'].tolist()
 
     # Split Cancer Types from Disease
     swapped_df['Cancer_Type'] = np.nan
