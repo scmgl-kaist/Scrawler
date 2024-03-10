@@ -232,6 +232,10 @@ def get_methods(pmc_list):
 
 if __name__ == "__main__":
 
+    if len(sys.argv) != 3:
+        print("Usage: python get_methods.py [input_file] [output_file]")
+        exit()
+
     # Read and process input
     df, series_list = read_input(sys.argv[1])
 
