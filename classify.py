@@ -106,7 +106,7 @@ def merge_methods(df, output_filename):
     df2 = pd.read_csv(output_filename)
 
     final_df = pd.merge(df1, df2[['Sample Name', 'Category']], on='Sample Name')
-    final_df.to_csv(output_filename)
+    final_df.to_csv(output_filename, index=False)
 
 
 if __name__ == "__main__":
