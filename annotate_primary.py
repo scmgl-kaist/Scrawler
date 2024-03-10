@@ -37,7 +37,13 @@ def answer_to_dict(answer):
         pair = line.strip()
 
         # split
-        key, value = pair.split(":")
+        try:
+            key, value = pair.split(":")
+        except:
+            print("Something when wrong while formatting GPT output.")
+            print("Output looks like this:")
+            print(answer)
+            exit()
 
         # remove whitespace
         key = key.strip()
