@@ -74,8 +74,8 @@ def annotate(api_key, df, output_filename):
         api_key=api_key,
     )
 
-    gpt_model = 'gpt-3.5-turbo'
-    # gpt_model = 'gpt-4-0125-preview'
+    # gpt_model = 'gpt-3.5-turbo'
+    gpt_model = 'gpt-4-0125-preview'
 
     # Dataframe with methods
     methods_df = df
