@@ -13,7 +13,7 @@ def read_input(input_filename):
     try:
         df = df[['Series', 'Sample Name', 'Organ', 'Healthy', 'Disease', 'Cancer_Tissue', 'Age', 'Sex']]
     except:
-        print("\nError! You input should have ['Series', 'Sample Name', 'Organ', 'Healthy', 'Disease', 'Cancer_Tissue', 'Age', 'Sex'] columns.\n")
+        print("\nError! Your input should have ['Series', 'Sample Name', 'Organ', 'Healthy', 'Disease', 'Cancer_Tissue', 'Age', 'Sex'] columns.\n")
         exit()
 
     return df
@@ -32,7 +32,7 @@ def answer_to_dict(answer):
         try:
             key, value = pair.split(":")
         except:
-            print("Something when wrong while formatting GPT output.")
+            print("Something went wrong while formatting GPT output.")
             print("Output looks like this:")
             print(answer)
             exit()
