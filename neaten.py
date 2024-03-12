@@ -64,8 +64,8 @@ def neaten_up(api_key, df):
     assert target_words
     assert client
 
-    gpt_model = 'gpt-3.5-turbo'
-    # gpt_model = 'gpt-4-0125-preview'
+    # gpt_model = 'gpt-3.5-turbo'
+    gpt_model = 'gpt-4-0125-preview'
 
     # Intro
     prompt = "You are an expert biologist looking at some human diseases. "
