@@ -1,6 +1,6 @@
 # SCraper
 
-ChatGPT-aided metadata annotation
+GPT-aided metadata annotation
 
 ```python
 python get_methods.py [input.csv] [output.csv]
