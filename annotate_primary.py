@@ -40,7 +40,7 @@ def answer_to_dict(answer):
         try:
             key, value = pair.split(":")
         except:
-            print("Something when wrong while formatting GPT output.")
+            print("Something went wrong while formatting GPT output.")
             print("Output looks like this:")
             print(answer)
             exit()
