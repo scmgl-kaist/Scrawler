@@ -1,4 +1,4 @@
-# SCraper
+# SCrawler
 
 GPT-aided metadata annotation
 
